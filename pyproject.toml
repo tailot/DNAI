@@ -1,11 +1,14 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "zeroai"
 version = "0.1.0"
 description = "Evolutionary model merging with automatic weight optimisation"
+license = "ISC"
+license-files = ["LICENSE"]
+authors = [{ name = "Vincenzo Tilotta" }]
 requires-python = ">=3.10"
 dependencies = [
     "torch>=2.2",

@@ -4,6 +4,8 @@
 
 **Language**: English (this file) · [Italiano](README.it.md)
 
+**License**: [ISC](LICENSE) — Copyright (c) 2026 Vincenzo Tilotta
+
 ZeroAI takes a *base model* and N *expert models* (`.safetensors` checkpoints) and searches, through Optuna (TPE) or a genetic algorithm, for the best combination of:
 
 - **merge method** (`linear`, `taskslim`, `ties`, `dare_linear`, `dare_ties`),
@@ -37,6 +39,7 @@ measuring every candidate with a multi-domain benchmark battery. The result is t
 16. [Using ZeroAI as a Python library](#16-using-zeroai-as-a-python-library)
 17. [Tests](#17-tests)
 18. [Repository layout](#18-repository-layout)
+19. [License](#19-license)
 
 ---
 
@@ -840,6 +843,7 @@ ZeroAI/
   pytest.ini                # testpaths=tests, pythonpath=., addopts=-q
   requirements.txt          # torch, transformers, accelerate, safetensors, PyYAML, numpy, optuna, mergekit, tqdm
   .gitignore                # ignores runs/, *.safetensors, venv, cache, Optuna *.db
+  LICENSE                   # ISC license, Copyright (c) 2026 Vincenzo Tilotta
   zeroai/
     __init__.py             # public API + __version__
     __main__.py             # python -m zeroai
@@ -871,7 +875,27 @@ ZeroAI/
 
 ---
 
-**Version**: `0.1.0` (`zeroai.__version__`). **License**: not declared in the repository.
+## 19. License
+
+**ISC License** — Copyright (c) 2026 Vincenzo Tilotta.
+
+The full text is in the [LICENSE](LICENSE) file. In short:
+
+| You may | Condition |
+|---|---|
+| use, copy, modify and distribute the software, for any purpose, with or without fee | the copyright notice and this permission notice must appear in all copies |
+
+The software is provided **"as is"**: no implied warranty of merchantability or fitness, and no liability of the author for any damage arising from its use.
+
+Where the license is declared:
+
+- `LICENSE` — full text;
+- `pyproject.toml` — `license = "ISC"` and `license-files = ["LICENSE"]` (SPDX expression, PEP 639): the metadata travels inside the wheel and inside the sdist;
+- `zeroai.__license__` — `"ISC"`.
+
+---
+
+**Version**: `0.1.0` (`zeroai.__version__`). **License**: ISC (`zeroai.__license__`), Copyright (c) 2026 Vincenzo Tilotta — see [LICENSE](LICENSE).
 
 
 

@@ -27,9 +27,11 @@ from zeroai.schemas import (
 )
 
 __version__ = "0.1.0"
+__license__ = "ISC"
 
 __all__ = [
     "__version__",
+    "__license__",
     "Genome",
     "normalize_weights",
     "EvolutionaryMergePipeline",

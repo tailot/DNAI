@@ -4,6 +4,8 @@
 
 **Lingua**: Italiano (questo file) · [English](README.md)
 
+**Licenza**: [ISC](LICENSE) — Copyright (c) 2026 Vincenzo Tilotta
+
 ZeroAI riceve in input un *base model* e N *expert model* (checkpoint `.safetensors`) e cerca, tramite Optuna (TPE) o un algoritmo genetico, la combinazione migliore di:
 
 - **metodo di merge** (`linear`, `taskslim`, `ties`, `dare_linear`, `dare_ties`),
@@ -37,6 +39,7 @@ misurando ogni candidato con una batteria di benchmark multi-dominio. Il risulta
 16. [Uso come libreria Python](#16-uso-come-libreria-python)
 17. [Test](#17-test)
 18. [Struttura del repository](#18-struttura-del-repository)
+19. [Licenza](#19-licenza)
 
 ---
 
@@ -840,6 +843,7 @@ ZeroAI/
   pytest.ini                # testpaths=tests, pythonpath=., addopts=-q
   requirements.txt          # torch, transformers, accelerate, safetensors, PyYAML, numpy, optuna, mergekit, tqdm
   .gitignore                # ignora runs/, *.safetensors, venv, cache, *.db di Optuna
+  LICENSE                   # licenza ISC, Copyright (c) 2026 Vincenzo Tilotta
   zeroai/
     __init__.py             # API pubblica + __version__
     __main__.py             # python -m zeroai
@@ -871,4 +875,24 @@ ZeroAI/
 
 ---
 
-**Versione**: `0.1.0` (`zeroai.__version__`). **Licenza**: non dichiarata nel repository.
+## 19. Licenza
+
+**Licenza ISC** — Copyright (c) 2026 Vincenzo Tilotta.
+
+Il testo completo è nel file [LICENSE](LICENSE). In sintesi:
+
+| Puoi | Condizione |
+|---|---|
+| usare, copiare, modificare e distribuire il software, per qualsiasi scopo, con o senza fee | l'avviso di copyright e questo avviso di permesso devono comparire in tutte le copie |
+
+Il software è fornito **"as is"**: nessuna garanzia implicita di commerciabilità o idoneità a uno scopo, e nessuna responsabilità dell'autore per danni derivanti dal suo uso.
+
+Dove la licenza è dichiarata:
+
+- `LICENSE` — testo completo;
+- `pyproject.toml` — `license = "ISC"` e `license-files = ["LICENSE"]` (espressione SPDX, PEP 639): i metadati viaggiano dentro la wheel e dentro la sdist;
+- `zeroai.__license__` — `"ISC"`.
+
+---
+
+**Versione**: `0.1.0` (`zeroai.__version__`). **Licenza**: ISC (`zeroai.__license__`), Copyright (c) 2026 Vincenzo Tilotta — vedi [LICENSE](LICENSE).
