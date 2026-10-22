@@ -2,8 +2,6 @@
 
 **Evolutionary optimization of model merging: automatically search the per-layer merge weights of an LLM model merge.**
 
-**Language**: English (this file) · [Italiano](README.it.md)
-
 **License**: [ISC](LICENSE) — Copyright (c) 2026 Vincenzo Tilotta
 
 ZeroAI takes a *base model* and N *expert models* (`.safetensors` checkpoints) and searches, through Optuna (TPE) or a genetic algorithm, for the best combination of:
