@@ -203,7 +203,12 @@ class SyntheticEvaluator(Evaluator):
 
     # ------------------------------------------------------------------ scoring
     def _block_vector(self, tensors: Dict[str, torch.Tensor], names: Sequence[str]) -> torch.Tensor:
-        return torch.cat([tensors[n].to(WORK_DTYPE).reshape(-1) for n in names])
+        # Scoring the synthetic world is tiny and must stay comparable across
+        # devices: every tensor (merged deltas may live on cuda) is brought back
+        # to cpu / float32 before it is mixed with the ground-truth vectors.
+        return torch.cat(
+            [tensors[n].to(device="cpu", dtype=WORK_DTYPE).reshape(-1) for n in names]
+        )
 
     def evaluate(self, artifact: MergedArtifact) -> EvaluationReport:
         if artifact.deltas is None:

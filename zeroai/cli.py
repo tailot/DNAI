@@ -95,6 +95,7 @@ def _search_space(args) -> SearchSpace:
         density_high=args.density_high,
         dare_density_low=args.dare_low,
         dare_density_high=args.dare_high,
+        dtype=DType(args.dtype),
     )
 
 
@@ -110,7 +111,7 @@ def _explicit_genome(args, n_models: int, n_blocks: int, space: SearchSpace) -> 
     """Build a genome from --method/--weights flags (used by the yaml and merge commands)."""
     flat = list(args.weights or [])
     if not flat:
-        return Genome.uniform(n_models, n_blocks)
+        return Genome.uniform(n_models, n_blocks).clipped(space)
     if len(flat) == n_blocks:
         rows = [list(flat) for _ in range(n_models)]
     elif len(flat) == n_blocks * n_models:
@@ -198,6 +199,7 @@ def cmd_yaml(args) -> int:
     )
     initial = _initial_genomes(args, len(models), len(blocks))
     genome = initial[0] if initial else Genome.uniform(len(models), len(blocks))
+    genome = genome.clipped(config.search_space)
     print(generator.yaml(genome, candidate_id="manual"))
     return 0
 

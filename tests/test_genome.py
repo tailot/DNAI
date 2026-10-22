@@ -196,6 +196,27 @@ def test_crossover_with_alpha_can_explore_beyond_the_parents():
     assert all(0.0 <= w <= 1.0 for child in clipped for row in child.weights for w in row)
 
 
+# ---------------------------------------------------------------------- dtype
+def test_sample_stamps_the_search_space_dtype():
+    space = SearchSpace(dtype=DType.BFLOAT16)
+    genome = Genome.sample(2, 2, space, random.Random(4))
+    assert genome.dtype is DType.BFLOAT16
+
+
+def test_clipped_adopts_the_search_space_dtype():
+    """The run dtype must survive clipping, otherwise --dtype is silently ignored."""
+    space = SearchSpace(dtype=DType.BFLOAT16)
+    assert make(weights=((0.5, 0.5),), dtype=DType.FLOAT16).clipped(space).dtype is DType.BFLOAT16
+    assert make(weights=((0.5, 0.5),)).clipped(SearchSpace()).dtype is DType.FLOAT16
+
+
+def test_mutate_and_crossover_keep_the_dtype():
+    space = SearchSpace(dtype=DType.BFLOAT16)
+    parent = Genome.sample(2, 2, space, random.Random(4))
+    assert parent.crossover(parent.clone(), random.Random(6)).dtype is DType.BFLOAT16
+    assert parent.mutate(random.Random(7)).dtype is DType.BFLOAT16
+
+
 # ----------------------------------------------------------- (de)serialisation
 def test_dict_roundtrip_preserves_every_gene():
     genome = make(

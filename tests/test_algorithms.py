@@ -319,3 +319,47 @@ def test_interference_energy_of_orthogonal_contributions_is_zero():
 
 def test_interference_energy_of_an_empty_list():
     assert interference_energy([]) == (0.0, 0.0)
+
+
+# ------------------------------------------------- seeded DARE on a cuda tensor
+HAS_CUDA = torch.cuda.is_available()
+
+
+@pytest.mark.skipif(not HAS_CUDA, reason="requires a CUDA device")
+def test_bernoulli_drop_accepts_a_cpu_generator_on_a_cuda_tensor():
+    """torch rejects a cpu generator for cuda tensors - DARE must not break."""
+    tensor = torch.ones(4000, device="cuda")
+    out = bernoulli_drop(tensor, 0.4, generator=torch.Generator(device="cpu").manual_seed(7))
+    assert out.device.type == "cuda"
+    assert out.dtype is torch.float32
+    kept = int((out != 0).sum())
+    assert 1200 <= kept <= 2800
+
+
+@pytest.mark.skipif(not HAS_CUDA, reason="requires a CUDA device")
+def test_dare_drop_pattern_is_the_same_on_cpu_and_cuda():
+    values = torch.ones(4000)
+    cpu_out = bernoulli_drop(
+        values, 0.4, rescale_norm=None, generator=torch.Generator().manual_seed(9)
+    )
+    cuda_out = bernoulli_drop(
+        values.to("cuda"), 0.4, rescale_norm=None, generator=torch.Generator().manual_seed(9)
+    )
+    assert torch.equal((cpu_out != 0), (cuda_out != 0).cpu())
+
+
+@pytest.mark.skipif(not HAS_CUDA, reason="requires a CUDA device")
+def test_combine_dare_methods_run_on_cuda_with_a_cpu_generator():
+    deltas = [torch.ones(2000, device="cuda"), -torch.ones(2000, device="cuda")]
+    for method in (MergeMethod.DARE_LINEAR, MergeMethod.DARE_TIES):
+        out = combine(
+            method,
+            deltas,
+            [0.6, 0.4],
+            density=0.5,
+            dare_keep=0.6,
+            dare_scale=1.5,
+            generator=torch.Generator(device="cpu").manual_seed(3),
+        )
+        assert out.device.type == "cuda"
+        assert torch.isfinite(out).all()

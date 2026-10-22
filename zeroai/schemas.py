@@ -211,6 +211,9 @@ class SearchSpace:
     dare_scale_low: float = 1.0
     dare_scale_high: float = 3.0
     methods: Tuple[MergeMethod, ...] = ALL_METHODS
+    #: Storage dtype stamped on every genome that enters the pipeline.  Not a
+    #: searched gene: the pipeline keeps it aligned with ``PipelineConfig.dtype``.
+    dtype: DType = DType.FLOAT16
 
     def __post_init__(self) -> None:
         if self.weight_low > self.weight_high:
