@@ -32,7 +32,7 @@ htmlcov/
 runs/
 out/
 merged/
-models/                 # checkpoint demo
+models/           
 *.safetensors
 *.ckpt
 *.bin
