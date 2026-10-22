@@ -680,6 +680,19 @@ What happens, in order:
 
 For a cheap first smoke test use `--population 4 --generations 1` (or `--trials 4`) and a 0.5B model.
 
+The whole sequence is scripted end to end (download of the three checkpoints, one merge, a
+small search (4 candidates by default), results and a generation test on the best checkpoint):
+
+```powershell
+.\scripts\real_model_demo.ps1                                        # doctor -> download -> merge -> search -> results
+.\scripts\real_model_demo.ps1 -Step search -Optimizer optuna -Trials 8
+.\scripts\real_model_demo.ps1 -Step results -SkipGenerationTest
+```
+
+The models it downloads are `Qwen/Qwen2.5-0.5B` (base), `Qwen/Qwen2.5-0.5B-Instruct` (chat
+expert) and `Qwen/Qwen2.5-Coder-0.5B-Instruct` (code expert): same architecture, same tensor
+names, ~988 MB each, no HF token required. They land in `models/` (ignored by git).
+
 ### 14.6 Use mergekit as the fusion engine
 
 ```powershell

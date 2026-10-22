@@ -76,6 +76,7 @@ class Genome:
             density=rng.uniform(space.density_low, space.density_high),
             dare_density=rng.uniform(space.dare_density_low, space.dare_density_high),
             dare_scale=rng.uniform(space.dare_scale_low, space.dare_scale_high),
+            dtype=space.dtype,
         )
 
     @classmethod
@@ -119,6 +120,7 @@ class Genome:
             density=min(max(self.density, space.density_low), space.density_high),
             dare_density=min(max(self.dare_density, space.dare_density_low), space.dare_density_high),
             dare_scale=min(max(self.dare_scale, space.dare_scale_low), space.dare_scale_high),
+            dtype=space.dtype,
         )
 
     def crossover(self, other: "Genome", rng: random.Random, alpha: float = 0.5) -> "Genome":
@@ -143,6 +145,7 @@ class Genome:
             dare_density=blend(self.dare_density, other.dare_density),
             dare_scale=blend(self.dare_scale, other.dare_scale),
             normalize=pick(self.normalize, other.normalize),
+            dtype=self.dtype,
         )
 
     def mutate(
@@ -179,6 +182,7 @@ class Genome:
             dare_density=jitter(self.dare_density, 0.0, 0.95),
             dare_scale=jitter(self.dare_scale, 0.5, 4.0),
             normalize=self.normalize if rng.random() >= rate else not self.normalize,
+            dtype=self.dtype,
         )
 
     # ------------------------------------------------------------- (de)serial

@@ -13,8 +13,8 @@ from __future__ import annotations
 import logging
 import os
 import time
-from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
+from dataclasses import dataclass, field, replace
 
 from zeroai.blocks import partition_tensors
 from zeroai.candidate import CandidateGenerator
@@ -168,6 +168,11 @@ class PipelineConfig:
         if self.mode == "model":
             if self.base_model is None or not self.models:
                 raise ValueError("model mode needs base_model and models")
+        # ``dtype`` is the run-level knob: keep the search space aligned with it
+        # so every sampled / clipped genome carries it into its MergePlan and the
+        # written checkpoints match --dtype.
+        if self.search_space.dtype is not self.dtype:
+            self.search_space = replace(self.search_space, dtype=self.dtype)
 
 
 class EvolutionaryMergePipeline:

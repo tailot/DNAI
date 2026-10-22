@@ -69,6 +69,30 @@ def magnitude_trim(
     return _rescaled_masked_tensor(tensor, mask.reshape_as(tensor), rescale_norm)
 
 
+def _bernoulli_mask(
+    work: torch.Tensor,
+    density: float,
+    generator: Optional[torch.Generator] = None,
+) -> torch.Tensor:
+    """Bernoulli mask shaped like ``work``, drawn on the generator's own device.
+
+    torch refuses a CPU generator for CUDA tensors ("Expected a 'cuda' device
+    type for generator but found 'cpu'"), which used to make every DARE method
+    fail under ``--device cuda``.  Drawing the mask where the generator lives and
+    moving it afterwards keeps DARE usable on GPU *and* keeps the drop pattern
+    identical, for a given seed, on cpu and cuda.
+    """
+    if generator is not None and generator.device.type != work.device.type:
+        mask = torch.bernoulli(
+            torch.full(
+                (work.numel(),), float(density), device=generator.device, dtype=WORK_DTYPE
+            ),
+            generator=generator,
+        )
+        return mask.to(device=work.device, dtype=work.dtype).reshape_as(work)
+    return torch.bernoulli(torch.full_like(work, float(density)), generator=generator)
+
+
 def bernoulli_drop(
     tensor: torch.Tensor,
     density: float,
@@ -84,7 +108,7 @@ def bernoulli_drop(
     # torch.bernoulli is not implemented for float16 on CPU -> upcast.
     work_dtype = tensor.dtype if (tensor.device.type != "cpu" or tensor.dtype == torch.bfloat16) else WORK_DTYPE
     work = tensor.to(work_dtype)
-    mask = torch.bernoulli(torch.full_like(work, float(density)), generator=generator)
+    mask = _bernoulli_mask(work, density, generator)
     return _rescaled_masked_tensor(work, mask, rescale_norm).to(tensor.dtype)
 
 
