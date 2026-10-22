@@ -1,0 +1,56 @@
+# ------------------------------------------------------------------ Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+build/
+dist/
+wheels/
+*.egg-info/
+*.egg
+.eggs/
+
+# ------------------------------------------------------- ambienti virtuali
+.venv/
+.venv-*/
+venv/
+env/
+ENV/
+
+# ------------------------------------------------------ tooling / test cache
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# -------------------------------------------------------- artefatti ZeroAI
+# Output delle run: report, YAML generati e checkpoint dei candidati
+runs/
+out/
+merged/
+*.safetensors
+*.ckpt
+*.bin
+*.gguf
+
+# --------------------------------------------------- Optuna / studio storage
+*.db
+*.db-journal
+
+# --------------------------------------------------------------- debug temp
+_out.txt
+_err.txt
+pytest_output.txt
+*.log
+.tmp_env.py
+
+# ----------------------------------------------------------------- IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini

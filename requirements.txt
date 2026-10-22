@@ -1,0 +1,12 @@
+torch>=2.2
+transformers>=4.40
+accelerate>=0.30
+safetensors>=0.4
+PyYAML>=6.0
+numpy>=1.26
+optuna>=4.0
+mergekit>=0.1.2
+tqdm>=4.66
+
+# Optional extras (see README "Real-model mode")
+# vllm>=0.6 ; ollama>=0.4

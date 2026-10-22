@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zeroai"
+version = "0.1.0"
+description = "Evolutionary model merging with automatic weight optimisation"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.2",
+    "transformers>=4.40",
+    "safetensors>=0.4",
+    "PyYAML>=6.0",
+    "optuna>=4.0",
+]
+
+[project.optional-dependencies]
+mergekit = ["mergekit>=0.1.2"]
+serve = ["vllm>=0.6"]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+zeroai = "zeroai.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["zeroai*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
